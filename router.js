@@ -1,6 +1,10 @@
 const Router = require("koa-router");
 const router = new Router();
 
-router.get("/", (ctx) => (ctx.body = "kamil_kusy!"));
+router.get("/", (ctx) => {
+  const var1 = process.env.VAR1;
+  const var2 = process.env.VAR_2;
+  ctx.body = `var1: ${var1} var2: ${var2}!`;
+});
 
 module.exports = router;

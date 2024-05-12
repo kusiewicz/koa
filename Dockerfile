@@ -2,9 +2,13 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package.json package-lock.json index.js router.js ./
+COPY package.json package-lock.json ./
 
-RUN npm install
+RUN npm ci
+
+COPY index.js router.js ./
+
+USER node
 
 CMD ["node", "index.js"]
 

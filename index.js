@@ -6,6 +6,12 @@ const router = require("./router");
 const App = new Koa();
 const port = 8000;
 
+// Middleware to log requests
+App.use(async (ctx, next) => {
+  console.log(`Received a request on ${ctx.url} from ${ctx.request.ip}`);
+  await next(); // Pass control to the next middleware function
+});
+
 App.use(parser())
   .use(cors())
   .use(router.routes())

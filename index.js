@@ -5,16 +5,23 @@ require("dotenv").config();
 const router = require("./router");
 const App = new Koa();
 const port = 8000;
+const client = require("./db");
 
-// Middleware to log requests
-App.use(async (ctx, next) => {
-  console.log(`Received a request on ${ctx.url} from ${ctx.request.ip}`);
-  await next(); // Pass control to the next middleware function
-});
+client
+  .connect()
+  .then(() => {
+    console.log("Connected to the database");
 
-App.use(parser())
-  .use(cors())
-  .use(router.routes())
-  .listen(port, () => {
-    console.log(`🚀 Server listening http://127.0.0.1:${port}/ 🚀`);
-  });
+    App.use(async (ctx, next) => {
+      console.log(`Received a request on ${ctx.url} from ${ctx.request.ip}`);
+      await next();
+    });
+
+    App.use(parser())
+      .use(cors())
+      .use(router.routes())
+      .listen(port, () => {
+        console.log(`🚀 Server listening http://127.0.0.1:${port}/ 🚀`);
+      });
+  })
+  .catch((err) => console.error(err));

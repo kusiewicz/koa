@@ -6,7 +6,7 @@ COPY package.json package-lock.json ./
 
 RUN npm ci
 
-COPY index.js router.js db.js ./
+COPY index.js router.js db.js redis.js ./
 
 FROM node:18-alpine
 
